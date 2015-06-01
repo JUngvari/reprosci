@@ -4,15 +4,14 @@ author: "J"
 date: "June 1, 2015"
 output: html_document
 ---
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-
+Install/load dplyr for subsetting data and ggplot2 for visualization.
 ```{r}
+library(dplyr)
+library(ggplot2)
 introdata <- read.csv("data/gapminder-5060.csv", header=TRUE)
 summary(introdata)
-canada <- filter(introdata, country=="Canada")
-plot(canada$lifeExp, canada$year, type="l")
+canada <- filter(introdata, country=="Canada") #select Canada only
+plot(canada$lifeExp, canada$year, type="l") ## plot using base packages 
 ```
 
 ```{r}
@@ -21,3 +20,30 @@ europe1967 <- filter(introdata, continent=="Europe", year==1967)
 plot(europe1952$gdpPercap, europe1952$lifeExp)
 points(europe1967$gdpPercap, europe1967$lifeExp, col="red")
 ```
+Exercise 2 
+```{r}
+gap7080 <- read.csv("data/gapminder-7080.csv", header=TRUE)
+gap90plus <- read.csv("data/gapminder-90plus.csv", header=TRUE)
+append1 <- merge(introdata, gap7080, by="country")
+appendALL <- merge(append1, gap90plus, by="country")
+countries=c("Canada", "Mexico", "United States", "Cambodia", "China", "Japan", "Uganda", "Egypt", "South Africa")
+years=c(1952,2007)
+ggplot(data = appendALL, 
+       aes(x = year, y = lifeExp, colour = country)) + # add colour by country
+  geom_line()   
+
+gap_north_america <- subset(appendALL, country %in% countries)
+
+ggplot(gap_north_america, aes(x = year, y = lifeExp, color=country)) + 
+       geom_line() + xlab("Year") + ylab("Life Expectancy (years)")
+```
+
+```{r}
+gap2007 <- filter(appendALL, year==2007)
+
+ggplot(gap2007, aes(x=gdpPercap, y = lifeExp, group=continent, color=continent)) + 
+        geom_point() + xlab("GDP (per capita)") + ylab("Life Expectancy (years)")
+```
+
+
+## Now that you are done, just relax and get ready for lunch by reading [this link](http://smittenkitchen.com/)
