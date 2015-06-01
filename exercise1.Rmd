@@ -1,0 +1,23 @@
+---
+title: "Exercise 1 - Part 1"
+author: "J"
+date: "June 1, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+
+```{r}
+introdata <- read.csv("data/gapminder-5060.csv", header=TRUE)
+summary(introdata)
+canada <- filter(introdata, country=="Canada")
+plot(canada$lifeExp, canada$year, type="l")
+```
+
+```{r}
+europe1952 <- filter(introdata, continent=="Europe", year==1952)
+europe1967 <- filter(introdata, continent=="Europe", year==1967)
+plot(europe1952$gdpPercap, europe1952$lifeExp)
+points(europe1967$gdpPercap, europe1967$lifeExp, col="red")
+```
